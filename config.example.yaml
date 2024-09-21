@@ -1,0 +1,11 @@
+{
+  "date_column": "Date",
+  "date_format": "%m/%d/%Y",
+  "ticker_column": "Symbol",
+  "ticker_to_track": "TICK",
+  "quanitity_column": "Quantity",
+  "security_price_column": "Price",
+  "transaction_type_column": "Action",
+  "transaction_buy_values": ["Stock Plan Activity"],
+  "transaction_sell_values": ["Sell"]
+}
