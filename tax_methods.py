@@ -28,7 +28,7 @@ def tax_optimizer_comparator(x, y, current_price, current_datetime):
         return Y_IS_GREATER
     elif x_gain != 0 and y_gain == 0:
         return X_IS_GREATER
-    
+
     # both is either loss or both is gain
     if x_gain > 0:  # both are gains
         if x_short_term and not y_short_term:
@@ -40,29 +40,34 @@ def tax_optimizer_comparator(x, y, current_price, current_datetime):
             return Y_IS_GREATER
         elif not x_short_term and y_short_term:
             return X_IS_GREATER
-    
+
     # both are also short term / long term
     if x_gain < y_gain:
         return Y_IS_GREATER
     elif x_gain > y_gain:
         return X_IS_GREATER
-    
+
     return X_AND_Y_EQUAL
+
 
 def fifo_comparator(x, y, current_price, current_datetime):
     return (x.datetime - y.datetime).total_seconds()
 
+
 def lifo_comparator(x, y, current_price, current_datetime):
     return (y.datetime - x.datetime).total_seconds()
+
 
 def high_cost_comparator(x, y, current_price, current_datetime):
     return y.cost_basis - x.cost_basis
 
+
 def low_cost_comparator(x, y, current_price, current_datetime):
     return x.cost_basis - y.cost_basis
 
+
 tax_methods = [
-    ("fifo", fifo_comparator), 
+    ("fifo", fifo_comparator),
     ("lifo", lifo_comparator),
     ("tax-optimizer", tax_optimizer_comparator),
     ("high-cost", high_cost_comparator),
