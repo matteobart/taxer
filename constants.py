@@ -1,7 +1,7 @@
 TRANSACTION_BUY = "BUY"
 TRANSACTION_SELL = "SELL"
 
-# CONFIG 
+# CONFIG
 DATE_COLUMN_KEY = "date_column"
 DATE_FORMAT_KEY = "date_format"
 TICKER_COLUMN_KEY = "ticker_column"
