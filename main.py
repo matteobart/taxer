@@ -1,12 +1,22 @@
 import sys
 import csv
-from datetime import datetime, timedelta
 import heapq
+import copy
+import logging
+from datetime import datetime, timedelta
 from functools import cmp_to_key
+
 from parse import parse_config, parse_transactions
 from tax_methods import tax_methods
 from accountant import Accountant
-import copy
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch = logging.StreamHandler()
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+
 
 def main(transactions_filepath, config_filepath):
     accountants = []

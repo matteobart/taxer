@@ -1,4 +1,10 @@
+import logging
 from functools import cmp_to_key
+
+from constants import TRANSACTION_BUY, TRANSACTION_SELL
+
+logger = logging.getLogger()
+
 
 class Accountant:
     def __init__(self, tax_method_name, tax_method_comparator):
@@ -8,10 +14,9 @@ class Accountant:
         self.profit_accumulator = 0
 
     def account_for_transaction(self, transaction_type, transaction):
-        print(f"{transaction_type} {transaction}")
-        if (transaction_type == "BUY"):
+        if (transaction_type == TRANSACTION_BUY):
             self.unsold_transactions.append(transaction)
-        elif (transaction_type == "SELL"):
+        elif (transaction_type == TRANSACTION_SELL):
             tax_method_cmp = lambda x, y: self.tax_method_comparator(x, y, transaction.cost_basis, transaction.datetime)
             self.unsold_transactions = sorted(self.unsold_transactions, key=cmp_to_key(tax_method_cmp))
             volume_left = transaction.transaction_size
@@ -24,7 +29,7 @@ class Accountant:
                     self.unsold_transactions.append(transaction_to_sell)
                 volume_left -= volume
         else:
-            print(f"Unknown transaction type passed: {transaction_type}")
+            logger.warning(f"Unknown transaction type passed: {transaction_type}")
 
     def sell_all_transactions(self, current_price):
         for transaction in self.unsold_transactions:
