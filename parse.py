@@ -17,19 +17,18 @@ def parse_config(filepath):
         return config
 
 
-def parse_transactions(transactions_filepath, config_filepath, on_new_transaction):
+def parse_transactions(transactions_filepath, config_filepath):
     config = parse_config(config_filepath)
     if not config:
-        return None
+        raise Exception("Bad configuration input")
 
     with open(transactions_filepath, newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         for i, row in enumerate(reader):
-            transaction_tuple = parse_transaction(row, config, i + 2)
-            if not transaction_tuple:
+            transaction = parse_transaction(row, config, i + 2)
+            if not transaction:
                 continue
-            transaction_type, transaction = transaction_tuple
-            on_new_transaction(transaction_type, transaction)
+            yield transaction
 
 
 def parse_transaction(transaction_row, config, line_number):
@@ -97,6 +96,8 @@ def parse_transaction(transaction_row, config, line_number):
         )
         return None
 
-    transaction = Transaction(transaction_size_value, cost_basis_value, datetime_value)
+    transaction = Transaction(
+        transaction_size_value, cost_basis_value, datetime_value, transaction_type_value
+    )
     logger.debug(f"{transaction_type_value} {transaction} on line {line_number}")
-    return transaction_type_value, transaction
+    return transaction

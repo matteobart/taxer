@@ -13,10 +13,10 @@ class Accountant:
         self.unsold_transactions = []
         self.profit_accumulator = 0
 
-    def account_for_transaction(self, transaction_type, transaction):
-        if transaction_type == TRANSACTION_BUY:
+    def account_for_transaction(self, transaction):
+        if transaction.transaction_type == TRANSACTION_BUY:
             self.unsold_transactions.append(transaction)
-        elif transaction_type == TRANSACTION_SELL:
+        elif transaction.transaction_type == TRANSACTION_SELL:
             tax_method_cmp = lambda x, y: self.tax_method_comparator(
                 x, y, transaction.cost_basis, transaction.datetime
             )
@@ -35,7 +35,9 @@ class Accountant:
                     self.unsold_transactions.append(transaction_to_sell)
                 volume_left -= volume
         else:
-            logger.warning(f"Unknown transaction type passed: {transaction_type}")
+            logger.warning(
+                f"Unknown transaction type passed: {transaction.transaction_type}"
+            )
 
     def sell_all_transactions(self, current_price):
         for transaction in self.unsold_transactions:

@@ -22,16 +22,13 @@ def main(transactions_filepath, config_filepath):
     accountants = []
     for [tax_method_name, tax_method_comparartor] in tax_methods:
         accountants.append(Accountant(tax_method_name, tax_method_comparartor))
-    global last_transaction_price
-    last_transaction_price = None
 
-    def on_new_transaction(transaction_type, transaction):
+    last_transaction_price = None
+    for transaction in parse_transactions(transactions_filepath, config_filepath):
         for accountant in accountants:
-            accountant.account_for_transaction(transaction_type, copy.copy(transaction))
-            global last_transaction_price
+            accountant.account_for_transaction(copy.copy(transaction))
             last_transaction_price = transaction.cost_basis
 
-    parse_transactions(transactions_filepath, config_filepath, on_new_transaction)
     print_results(accountants, last_transaction_price)
 
 
