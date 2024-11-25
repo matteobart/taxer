@@ -7,5 +7,9 @@
   "security_price_column": "Price",
   "transaction_type_column": "Action",
   "transaction_buy_values": ["Stock Plan Activity"],
-  "transaction_sell_values": ["Sell"]
+  "transaction_sell_values": ["Sell"],
+  "last_date": "2024/11/05",
+  "last_price": "12.33",
+  "capital_gains_tax_rate": "15",
+  "income_tax_rate": "20"
 }
