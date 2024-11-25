@@ -13,12 +13,44 @@ logger = logging.getLogger()
 def parse_config(filepath):
     with open(filepath) as f:
         config = json.load(f)
+        last_date_value = config.get(LAST_DATE_KEY)
+        if last_date_value:
+            try:
+                parsed_last_date_value = datetime.strptime(last_date_value, "%Y/%m/%d")
+                config[LAST_DATE_KEY] = parsed_last_date_value
+            except:
+                config[LAST_DATE_KEY] = None
+                logger.error(f"Config value for {LAST_DATE_KEY} is incorrectly formatted expected the following format: YYYY/MM/DD")
+
+        last_price_value = config.get(LAST_PRICE_KEY)
+        if last_price_value:
+            parsed_last_price_value = float(last_price_value)
+            if parsed_last_price_value:
+                config[LAST_PRICE_KEY] = parsed_last_price_value
+            else:
+                config[LAST_PRICE_KEY] = None
+
+
+
+        capital_gain_tax_rate_value = config.get(CAPTIAL_GAINS_TAX_RATE_KEY)
+        if isinstance(capital_gain_tax_rate_value, int):
+            config[CAPTIAL_GAINS_TAX_RATE_KEY] = capital_gain_tax_rate_value / 100
+        else:
+            config[CAPTIAL_GAINS_TAX_RATE_KEY] = None
+
+        income_tax_rate_value = config.get(INCOME_TAX_RATE_KEY)
+        if isinstance(income_tax_rate_value, int):
+            config[INCOME_TAX_RATE_KEY] = income_tax_rate_value / 100
+        else:
+            config[INCOME_TAX_RATE_KEY] = None
+
+
+
         # todo: add a bunch of error checking here for the various required files
         return config
 
 
-def parse_transactions(transactions_filepath, config_filepath):
-    config = parse_config(config_filepath)
+def parse_transactions(transactions_filepath, config):
     if not config:
         raise Exception("Bad configuration input")
 
